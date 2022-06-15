@@ -55,3 +55,13 @@ print('FastConsole: ' + str(1 / elapsedTime1))
 print('Python clear: ' + str(1 / elapsedTime2))
 ```
 
+### Usage:
+```py
+from FastConsole import Console
+
+fc = Console((120, 200)) # create a console with 120x200 size
+fc.attach()
+fc.write('Hello, world', 0, 0)
+sleep(5)
+fc.detach()
+```
