@@ -3,7 +3,7 @@ import win32con
 from win32api import GetSystemMetrics
 
 class Console:
-    def __init__(self, width=120, height=30):
+    def __init__(self, size=(120, 30)):
         '''
         Create new Console instance with specified width and height.\n
         The specified width and height cannot be less than the width and height of the console screen buffer's window. \n
@@ -15,8 +15,8 @@ class Console:
         self.hConsoleOutput = win32console.CreateConsoleScreenBuffer(DesiredAccess=win32con.GENERIC_READ | win32con.GENERIC_WRITE, ShareMode=0, SecurityAttributes=None, Flags=1)
         self.stdHandle = win32console.GetStdHandle(win32console.STD_OUTPUT_HANDLE)
 
-        self.width = width
-        self.height = height
+        self.width = size[0]
+        self.height = size[1]
 
         self.hConsoleOutput.SetConsoleScreenBufferSize(win32console.PyCOORDType(self.width, self.height))
         
@@ -49,12 +49,12 @@ class Console:
 
         return nLength == len(buffer)
 
-    def write(self, buffer='', x=0, y=0):
+    def write(self, buffer='', coordinates=(0, 0)):
         '''
         Writes a string of characters at a specified position. \n
         Return True if all characters were written successfully.
         '''
-        nLength = self.hConsoleOutput.WriteConsoleOutputCharacter(buffer, win32console.PyCOORDType(x, y))
+        nLength = self.hConsoleOutput.WriteConsoleOutputCharacter(buffer, win32console.PyCOORDType(coordinates[0], coordinates[1]))
 
         return nLength == len(buffer)
 
@@ -64,12 +64,12 @@ class Console:
         '''
         self.hConsoleOutput.FillConsoleOutputCharacter(' ', self.width * self.height, win32console.PyCOORDType(0, 0))
 
-    def pointTo(self, x=0, y=0):
+    def pointTo(self, coordinates=(0, 0)):
         '''
         The coordinates are the column and row of a screen buffer character cell. \n
         The coordinates must be within the boundaries of the console screen buffer.
         '''
-        self.hConsoleOutput.SetConsoleCursorPosition(win32console.PyCOORDType(x, y))
+        self.hConsoleOutput.SetConsoleCursorPosition(win32console.PyCOORDType(coordinates[0], coordinates[1]))
 
     def setCursorVisibility(self, isShow=True):
         self.hConsoleOutput.SetConsoleCursorInfo(1, isShow)
